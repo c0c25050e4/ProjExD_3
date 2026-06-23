@@ -4,7 +4,6 @@ import sys
 import time
 import pygame as pg
 
-
 WIDTH = 1100  # ゲームウィンドウの幅
 HEIGHT = 650  # ゲームウィンドウの高さ
 NUM_OF_BOMBS = 5  # 爆弾の数
@@ -23,7 +22,6 @@ def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
     if obj_rct.top < 0 or HEIGHT < obj_rct.bottom:
         tate = False
     return yoko, tate
-
 
 class Bird:
     """
@@ -80,6 +78,7 @@ class Bird:
         self.rct.move_ip(sum_mv)
         if check_bound(self.rct) != (True, True):
             self.rct.move_ip(-sum_mv[0], -sum_mv[1])
+            
         if not (sum_mv[0] == 0 and sum_mv[1] == 0):
             self.img = __class__.imgs[tuple(sum_mv)]
         screen.blit(self.img, self.rct)
@@ -157,7 +156,6 @@ class Score:
         screen.blit(self.img, self.rct)
 
 
-
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))    
@@ -165,7 +163,6 @@ def main():
     bird = Bird((300, 200))
     bombs = [Bomb((255, 0, 0), 10) for _ in range(NUM_OF_BOMBS)]
 
-    # ★ 単体の beam = None を削除し、リスト名を指示通り「beams」に統一すると分かりやすいです
     beams = []  
     clock = pg.time.Clock()
     tmr = 0
@@ -178,7 +175,6 @@ def main():
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 beams.append(Beam(bird))            
         screen.blit(bg_img, [0, 0])
-        
         # プレイヤーと爆弾の衝突判定（ゲームオーバー）
         for bomb in bombs:
             if bird.rct.colliderect(bomb.rct):
@@ -186,7 +182,6 @@ def main():
                 pg.display.update()
                 time.sleep(1)
                 return
-        
         # ビームと爆弾の衝突判定（二重ループで全通りチェック）
         for i, bomb in enumerate(bombs):
             for j, beam in enumerate(beams):
